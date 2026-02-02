@@ -8,10 +8,10 @@
 
 | Файл | Описание |
 |------|---------|
-| [Documentation/Plan.md](Documentation/Plan.md) | План тестирования |
-| [Documentation/Check.xlsx](Documentation/Check.xlsx) | Чек-лист с результатами ручных тестов |
-| [Documentation/Cases.xlsx](Documentation/Cases.xlsx) | Тест-кейсы |
-| [Documentation/allure-results.zip](Documentation/allure-results.zip) | Готовый Allure-отчёт |
+| [Documentation/Plan.md](documentation/Plan.md) | План тестирования |
+| [Documentation/Check.xlsx](documentation/Check.xlsx) | Чек-лист с результатами ручных тестов |
+| [Documentation/Cases.xlsx](documentation/Cases.xlsx) | Тест-кейсы |
+| [Documentation/allure-results.zip](documentation/allure-results.zip) | Готовый Allure-отчёт |
 
 ---
 
