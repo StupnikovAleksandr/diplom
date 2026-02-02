@@ -9,9 +9,9 @@
 | Файл | Описание |
 |------|---------|
 | [Documentation/Plan.md](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/Plan.md) | План тестирования |
-| [Documentation/Check.xlsx]([Documentation/](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/Check.xlsx) | Чек-лист с результатами ручных тестов |
-| [Documentation/Cases.xlsx]([Documentation/](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/Cases.xlsx) | Тест-кейсы |
-| [Documentation/allure-results.zip]([Documentation/](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/allure-results.zip) | Готовый Allure-отчёт |
+| [Documentation/Check.xlsx](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/Check.xlsx) | Чек-лист с результатами ручных тестов |
+| [Documentation/Cases.xlsx](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/Cases.xlsx) | Тест-кейсы |
+| [Documentation/allure-results.zip](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/allure-results.zip) | Готовый Allure-отчёт |
  
 ---
 
