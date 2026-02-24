@@ -20,6 +20,7 @@ import androidx.test.espresso.ViewInteraction;
 
 import org.hamcrest.Matchers;
 
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class EditingNewsPage {
@@ -28,7 +29,7 @@ public class EditingNewsPage {
     private final ViewInteraction firstCheck_NewsEditing_tab = onView(withId(R.id.custom_app_bar_title_text_view));
     private final ViewInteraction secondCheck_NewsEditing_tab = onView(withId(R.id.custom_app_bar_sub_title_text_view));
 
-    private final ViewInteraction category_text_auto_complete_text_view = onView(withId(R.id.news_item_category_text_auto_complete_text_view));
+    private final ViewInteraction category_text_input = onView(withId(R.id.news_item_category_text_auto_complete_text_view));
     private final ViewInteraction title_text_auto_complete_text_view = onView(withId(R.id.news_item_title_text_input_edit_text));
     private final ViewInteraction publish_date_text_input = onView(withId(R.id.news_item_publish_date_text_input_edit_text));
     private final ViewInteraction publish_time_text_input = onView(withId(R.id.news_item_publish_time_text_input_edit_text));
@@ -50,34 +51,60 @@ public class EditingNewsPage {
 
 
     public void checkNewsEditingPage() {
-        firstCheck_NewsEditing_tab.check(matches(isDisplayed()));
-        secondCheck_NewsEditing_tab.check(matches(isDisplayed()));
+        Allure.step("Проверка отображения экрана редактирования новости");
+        firstCheck_NewsEditing_tab
+                .check(matches(isDisplayed()));
+        secondCheck_NewsEditing_tab
+                .check(matches(isDisplayed()));
     }
 
     public void editNewsTab(String category, String title, String publish_date, String time, String description) {
-        category_text_auto_complete_text_view.perform(replaceText(category), closeSoftKeyboard());
-        title_text_auto_complete_text_view.perform(replaceText(title), closeSoftKeyboard());
-        publish_date_text_input.perform(replaceText(publish_date), closeSoftKeyboard());
-        publish_time_text_input.perform(replaceText(time), closeSoftKeyboard());
-        description_text_input.perform(replaceText(description), closeSoftKeyboard());
+        Allure.step("Редактирование данных новости");
+
+        Allure.step("Ввод категории: " + category);
+        category_text_input
+                .perform(replaceText(category), closeSoftKeyboard());
+
+        Allure.step("Ввод заголовка: " + title);
+        title_text_auto_complete_text_view
+                .perform(replaceText(title), closeSoftKeyboard());
+
+        Allure.step("Ввод даты публикации: " + publish_date);
+        publish_date_text_input
+                .perform(replaceText(publish_date), closeSoftKeyboard());
+
+        Allure.step("Ввод времени публикации: " + time);
+        publish_time_text_input
+                .perform(replaceText(time), closeSoftKeyboard());
+
+        Allure.step("Ввод описания: " + description);
+        description_text_input
+                .perform(replaceText(description), closeSoftKeyboard());
     }
 
 
     public void clickAndCheckUncheckedCheckBox() {
-        chekBoxActive.check(matches(isDisplayed())).perform(click());
+        Allure.step("Снятие галочки с чек-бокса 'Active'");
+        chekBoxActive
+                .check(matches(isDisplayed())).perform(click());
         checkCheckBoxIsUnchecked();
     }
 
     public void checkCheckBoxIsUnchecked() {
-        chekBoxActive.check(matches(not(isChecked())));
+        Allure.step("Проверка, что чек-бокс 'Active' снят");
+        chekBoxActive
+                .check(matches(not(isChecked())));
     }
 
     public void checkCheckBoxIsChecked() {
-        chekBoxActive.check(matches(isChecked()));
+        Allure.step("Проверка, что чек-бокс 'Active' установлен");
+        chekBoxActive
+                .check(matches(isChecked()));
     }
 
 
     public void checkErrorEmptyFields() {
+        Allure.step("Проверка отображения ошибки: 'Fill empty fields'");
         errorEmptyFailed
                 .inRoot(withDecorView(Matchers.not(decorView)))
                 .check(matches(isDisplayed()));
@@ -85,6 +112,7 @@ public class EditingNewsPage {
 
 
     public void checkErrorSavingFailed() {
+        Allure.step("Проверка отображения ошибки: 'Saving failed. Try again later.'");
         errorSavingFailed
                 .inRoot(withDecorView(Matchers.not(decorView)))
                 .check(matches(isDisplayed()));
@@ -92,22 +120,30 @@ public class EditingNewsPage {
 
 
     public void clickSaveButton() {
-        save_Button.check(matches(isDisplayed())).perform(click());
+        Allure.step("Нажатие кнопки 'Сохранить'");
+        save_Button
+                .check(matches(isDisplayed())).perform(click());
     }
 
     public void clickCancelButton() {
-        cancel_Button.check(matches(isDisplayed())).perform(click());
+        Allure.step("Нажатие кнопки 'Отмена'");
+        cancel_Button
+                .check(matches(isDisplayed())).perform(click());
     }
 
     public void clickCancelButtonAndWindowModalCancel() {
+        Allure.step("Отмена в модальном окне редактирования с подтверждением 'Cancel'");
         clickCancelButton();
-        windowModalCancel.check(matches(isDisplayed()))
+        windowModalCancel
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void clickCancelButtonAndWindowModalOK() {
+        Allure.step("Отмена в модальном окне редактирования с подтверждением 'OK'");
         clickCancelButton();
-        windowModalOK.check(matches(isDisplayed()))
+        windowModalOK
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 

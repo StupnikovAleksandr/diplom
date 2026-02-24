@@ -23,18 +23,19 @@ import androidx.test.espresso.matcher.RootMatchers;
 import org.hamcrest.Matcher;
 
 import data.Helper;
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class LoveIsAllPage {
 
     private final ViewInteraction loveIsAllText = onView(withText("Love is all"));
-    private final Matcher<View> quotesList = withId(R.id.our_mission_item_list_recycler_view);
 
     public void checkOnLoveIsAllTab() {
-        loveIsAllText.check(matches(isDisplayed()));
-    }
+        Allure.step("Проверка, что открыта вкладка Love is all");
 
-//
+        loveIsAllText
+                .check(matches(isDisplayed()));
+    }
 }
 
 

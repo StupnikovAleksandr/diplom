@@ -17,8 +17,12 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 import android.view.View;
+
 import androidx.test.espresso.ViewInteraction;
+
 import org.hamcrest.Matchers;
+
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class CreatingNewsPage {
@@ -46,56 +50,93 @@ public class CreatingNewsPage {
 
 
     public void manualCreateNews(String category, String title, String publisher, String time, String description) {
+        Allure.step("Ввод данных новости с ручным вводом категории");
 
-        choiceСategory.perform(click())
+        Allure.step("Ввод категории: " + category);
+        choiceСategory
+                .perform(click())
                 .perform(replaceText(category), closeSoftKeyboard());
-        choiceTitle.perform(replaceText(title), closeSoftKeyboard());
-        choicePublisher.perform(replaceText(publisher), closeSoftKeyboard());
-        choiceTime.perform(replaceText(time), closeSoftKeyboard());
-        choiceDescription.perform(replaceText(description), closeSoftKeyboard());
+
+        Allure.step("Ввод заголовка: " + title);
+        choiceTitle
+                .perform(replaceText(title), closeSoftKeyboard());
+
+        Allure.step("Ввод даты публикации: " + publisher);
+        choicePublisher
+                .perform(replaceText(publisher), closeSoftKeyboard());
+
+        Allure.step("Ввод времени публикации: " + time);
+        choiceTime
+                .perform(replaceText(time), closeSoftKeyboard());
+
+        Allure.step("Ввод описания: " + description);
+        choiceDescription
+                .perform(replaceText(description), closeSoftKeyboard());
 
     }
 
     public void createNews(String category, String title, String publisher, String time, String description) {
+        Allure.step("Создание новости с выбором категории из списка");
 
-        choiceСategory.perform(click());
+        Allure.step("Клик по полю категории для открытия списка");
+        choiceСategory
+                .perform(click());
 
+        Allure.step("Выбор категории из выпадающего списка: " + category);
         onData(allOf(is(instanceOf(String.class)), is(category)))
                 .inRoot(isPlatformPopup())
                 .perform(click());
 
-        choiceTitle.perform(replaceText(title), closeSoftKeyboard());
-        choicePublisher.perform(replaceText(publisher), closeSoftKeyboard());
-        choiceTime.perform(replaceText(time), closeSoftKeyboard());
-        choiceDescription.perform(replaceText(description), closeSoftKeyboard());
+        Allure.step("Ввод заголовка: " + title);
+        choiceTitle
+                .perform(replaceText(title), closeSoftKeyboard());
+
+        Allure.step("Ввод даты публикации: " + publisher);
+        choicePublisher
+                .perform(replaceText(publisher), closeSoftKeyboard());
+
+        Allure.step("Ввод времени публикации: " + time);
+        choiceTime
+                .perform(replaceText(time), closeSoftKeyboard());
+
+        Allure.step("Ввод описания: " + description);
+        choiceDescription
+                .perform(replaceText(description), closeSoftKeyboard());
     }
 
 
     public void clickSaveButton() {
+        Allure.step("Нажатие кнопки 'Сохранить'");
         saveButton
                 .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void clickCancelButton() {
+        Allure.step("Нажатие кнопки 'Отмена'");
         cancel_button
                 .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void clickCancelButtonAndWindowModalCancel() {
+        Allure.step("Отмена создания новости с подтверждением 'Cancel'");
         clickCancelButton();
-        windowModalCancel.check(matches(isDisplayed()))
+        windowModalCancel
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void clickCancelButtonAndWindowModalOK() {
+        Allure.step("Отмена создания новости с подтверждением 'OK'");
         clickCancelButton();
-        windowModalOK.check(matches(isDisplayed()))
+        windowModalOK
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void checkCreatingNewsPage() {
+        Allure.step("Проверка отображения экрана создания новости");
         CheckTitleCreatingNewsPage1
                 .check(matches(isDisplayed()));
         CheckTitleCreatingNewsPage2
@@ -104,12 +145,14 @@ public class CreatingNewsPage {
     }
 
     public void checkErrorSavingFailed() {
+        Allure.step("Проверка отображения ошибки: 'Saving failed. Try again later.'");
         errorSavingFailed
                 .inRoot(withDecorView(Matchers.not(decorView)))
                 .check(matches(isDisplayed()));
     }
 
     public void checkErrorEmptyFailed() {
+        Allure.step("Проверка отображения ошибки: 'Fill empty fields'");
         errorEmptyFailed
                 .inRoot(withDecorView(Matchers.not(decorView)))
                 .check(matches(isDisplayed()));

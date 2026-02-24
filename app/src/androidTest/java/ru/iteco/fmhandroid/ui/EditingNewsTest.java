@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 
 import data.Row;
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
-import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Story;
 import page.AuthorizationPage;
@@ -38,16 +37,23 @@ public class EditingNewsTest {
     public void setUp() {
         mActivityScenarioRule.getScenario().onActivity(activity -> decorView = activity.getWindow().getDecorView());
         try {
+            mainPage.checkMainPage();
+            mainPage.goToTabAllNews();
+            newsPage.buttonEditNews();
+            controlPanelPage.goOverCreatingNews();
+            return;
+        } catch (Exception ignored) {}
+        try {
             authorizationPage.checkIsDisplayed();
-        } catch (Exception e) {
-            navigationPage.openMenu();
-            navigationPage.logOut();
-        }
+            authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
+            mainPage.goToTabAllNews();
+            newsPage.buttonEditNews();
+            controlPanelPage.goOverCreatingNews();
+        } catch (Exception ignored) {}
     }
 
     AuthorizationPage authorizationPage = new AuthorizationPage();
     NewsPage newsPage = new NewsPage();
-    NavigationPage navigationPage = new NavigationPage();
     MainPage mainPage = new MainPage();
     ControlPanelPage controlPanelPage = new ControlPanelPage();
     CreatingNewsPage creatingNewsPage = new CreatingNewsPage();
@@ -69,23 +75,14 @@ public class EditingNewsTest {
         String updatePublicationDate = Row.getPlus2DayDate();
         String updateTime = Row.getTime();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
-        newsPage.buttonEditNews();
-        controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("переход в редактирование новости");
         controlPanelPage.editNewsByTitle(title);
         editingNewsPage.editNewsTab(updateCategory, updateTitle, updatePublicationDate, updateTime, updateDescription);
         editingNewsPage.clickSaveButton();
         controlPanelPage.checkEditAndCreateNewsByTitle(updateTitle, updateDescription, updatePublicationDate, "ACTIVE");
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(updateTitle);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -108,24 +105,15 @@ public class EditingNewsTest {
         String updatePublicationDate = Row.getPlus2DayDate();
         String updateTime = Row.getTimePlus2Hours();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
-        newsPage.buttonEditNews();
-        controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("переход в редактирование новости");
         controlPanelPage.editNewsByTitle(title);
         editingNewsPage.editNewsTab(updateCategory, updateTitle, updatePublicationDate, updateTime, updateDescription);
         editingNewsPage.clickSaveButton();
         editingNewsPage.checkErrorEmptyFields();
         editingNewsPage.clickCancelButtonAndWindowModalOK();
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -148,25 +136,15 @@ public class EditingNewsTest {
         String updatePublicationDate = Row.getPlus2DayDate();
         String updateTime = Row.getTimePlus2Hours();
 
-
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
-        newsPage.buttonEditNews();
-        controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("переход в редактирование новости");
         controlPanelPage.editNewsByTitle(title);
         editingNewsPage.editNewsTab(updateCategory, updateTitle, updatePublicationDate, updateTime, updateDescription);
         editingNewsPage.clickAndCheckUncheckedCheckBox();
         editingNewsPage.clickSaveButton();
         controlPanelPage.checkEditAndCreateNewsByTitle(updateTitle, updateDescription, updatePublicationDate, "NOT ACTIVE");
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(updateTitle);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -190,23 +168,14 @@ public class EditingNewsTest {
         String updatePublicationDate = Row.getPlus2DayDate();
         String updateTime = Row.getTimePlus2Hours();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
-        newsPage.buttonEditNews();
-        controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("переход в редактирование новости");
         controlPanelPage.editNewsByTitle(title);
         editingNewsPage.editNewsTab(updateCategory, updateTitle, updatePublicationDate, updateTime, updateDescription);
         editingNewsPage.clickCancelButtonAndWindowModalOK();
         controlPanelPage.checkNewsDoesNotExist(updateTitle, updateDescription);
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -229,27 +198,16 @@ public class EditingNewsTest {
         String updatePublicationDate = Row.getPlus2DayDate();
         String updateTime = Row.getTimePlus2Hours();
 
-
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
-        newsPage.buttonEditNews();
-        controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("переход в редактирование новости");
         controlPanelPage.editNewsByTitle(title);
         editingNewsPage.editNewsTab(updateCategory, updateTitle, updatePublicationDate, updateTime, updateDescription);
         editingNewsPage.clickSaveButton();
 
-        Allure.step("проверка ошибки");
         editingNewsPage.checkErrorSavingFailed();
         editingNewsPage.clickCancelButtonAndWindowModalOK();
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -272,31 +230,20 @@ public class EditingNewsTest {
         String updatePublicationDate = Row.getPlus2DayDate();
         String updateTime = Row.getTimePlus2Hours();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
-        newsPage.buttonEditNews();
-        controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("переход в редактирование новости");
         controlPanelPage.editNewsByTitle(title);
         editingNewsPage.editNewsTab(updateCategory, updateTitle, updatePublicationDate, updateTime, updateDescription);
         editingNewsPage.clickCancelButtonAndWindowModalCancel();
 
-        Allure.step("проверка что мы остались в табе редактирования");
         editingNewsPage.checkNewsEditingPage();
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         editingNewsPage.clickCancelButtonAndWindowModalOK();
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
         controlPanelPage.checkNewsControlPanelIsDelete(title);
     }
-
 
 }

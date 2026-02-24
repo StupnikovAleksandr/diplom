@@ -30,6 +30,20 @@ public class FilterNewsTest {
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(AppActivity.class);
 
+    @Before
+    public void setUp() {
+        mActivityScenarioRule.getScenario().onActivity(activity -> decorView = activity.getWindow().getDecorView());
+
+        try {
+            mainPage.checkMainPage();
+            return;
+        } catch (Exception ignored) {}
+
+        try {
+            authorizationPage.checkIsDisplayed();
+            authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
+        } catch (Exception ignored) {}
+    }
     AuthorizationPage authorizationPage = new AuthorizationPage();
     NewsPage newsPage = new NewsPage();
     NavigationPage navigationPage = new NavigationPage();
@@ -39,17 +53,6 @@ public class FilterNewsTest {
     FilterNewsPage filterNewsPage = new FilterNewsPage();
 
     private View decorView;
-
-    @Before
-    public void setUp() {
-        mActivityScenarioRule.getScenario().onActivity(activity -> decorView = activity.getWindow().getDecorView());
-        try {
-            authorizationPage.checkIsDisplayed();
-        } catch (Exception e) {
-            navigationPage.openMenu();
-            navigationPage.logOut();
-        }
-    }
 
     @Story("ТК-20 ФИЛЬТРАЦИЯ ТОЛЬКО ПО КАТЕГОРИИ (даты пустые)")
     @Test
@@ -61,26 +64,19 @@ public class FilterNewsTest {
         String description = Row.getRandomDescription();
         String publisher = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publisher, time, description);
         creatingNewsPage.clickSaveButton();
         navigationPage.goOverTabNews();
 
-        Allure.step("Фильтрация");
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.editFilterTab(category);
         filterNewsPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         filterNewsPage.checkEditFilterTab(title, description, publisher);
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         newsPage.buttonEditNews();
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
@@ -99,26 +95,20 @@ public class FilterNewsTest {
         String description = Row.getRandomDescription();
         String publisher = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publisher, time, description);
         creatingNewsPage.clickSaveButton();
         navigationPage.goOverTabNews();
 
-        Allure.step("Фильтрация");
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.editFilterTab(category, publisher, publisher);
         filterNewsPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         filterNewsPage.checkEditFilterTab(title, description, publisher);
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         newsPage.buttonEditNews();
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
@@ -137,26 +127,20 @@ public class FilterNewsTest {
         String description = Row.getRandomDescription();
         String publisher = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publisher, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         navigationPage.goOverTabNews();
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.editFilterCategoryAndDateEnd(category, publisher); // дата окончания пустая
         filterNewsPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         filterNewsPage.checkErrorWrongAnClickOK();
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         filterNewsPage.clickCancelButton();
         newsPage.buttonEditNews();
         controlPanelPage.deleteNewsByTitle(title);
@@ -176,28 +160,22 @@ public class FilterNewsTest {
         String description = Row.getRandomDescription();
         String publisher = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publisher, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         navigationPage.goOverTabNews();
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.editFilterTab(category, publisher); // дата окончания пустая
 
         filterNewsPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         filterNewsPage.checkErrorWrongAnClickOK();
         filterNewsPage.clickCancelButton();
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         newsPage.buttonEditNews();
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
@@ -216,27 +194,21 @@ public class FilterNewsTest {
         String description = Row.getRandomDescription();
         String publisher = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publisher, time, description);
         creatingNewsPage.clickSaveButton();
         navigationPage.goOverTabNews();
 
-        Allure.step("Фильтрация");
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.editFilterTabStart(publisher); // дата начала только, остальные  пустое
         filterNewsPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         filterNewsPage.checkErrorWrongAnClickOK();
         filterNewsPage.clickCancelButton();
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         newsPage.buttonEditNews();
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
@@ -254,27 +226,21 @@ public class FilterNewsTest {
         String description = Row.getRandomDescription();
         String publisher = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publisher, time, description);
         creatingNewsPage.clickSaveButton();
         navigationPage.goOverTabNews();
 
-        Allure.step("Фильтрация");
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.editFilterTabEnd(publisher);
         filterNewsPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         filterNewsPage.checkErrorWrongAnClickOK();
         filterNewsPage.clickCancelButton();
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         newsPage.buttonEditNews();
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
@@ -292,27 +258,21 @@ public class FilterNewsTest {
         String description = Row.getRandomDescription();
         String publisher = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publisher, time, description);
         creatingNewsPage.clickSaveButton();
         navigationPage.goOverTabNews();
 
-        Allure.step("Фильтрация");
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.editFilterTabRange(publisher, publisher); // только даты, без категории
         filterNewsPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         filterNewsPage.checkEditFilterTab(title, description, publisher);
 
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         newsPage.buttonEditNews();
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
@@ -324,11 +284,8 @@ public class FilterNewsTest {
     @Test
     public void filterExitEmptyTest() {
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Фильтрация");
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.clickCancelButton();
         newsPage.checkNewsTab();
@@ -341,11 +298,8 @@ public class FilterNewsTest {
         String category = Row.getRandomCategory();
         String publisher = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Фильтрация");
         newsPage.clickFilterButtonNewsTab();
         filterNewsPage.editFilterTab(category, publisher, publisher);
         filterNewsPage.clickCancelButton();

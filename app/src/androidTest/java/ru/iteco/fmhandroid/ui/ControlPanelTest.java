@@ -1,7 +1,6 @@
 package ru.iteco.fmhandroid.ui;
 import android.view.View;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,26 +24,27 @@ public class ControlPanelTest {
     @Rule
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(AppActivity.class);
-
-    AuthorizationPage authorizationPage = new AuthorizationPage();
-    NewsPage newsPage = new NewsPage();
-    NavigationPage navigationPage = new NavigationPage();
-    MainPage mainPage = new MainPage();
-    ControlPanelPage controlPanelPage = new ControlPanelPage();
-    CreatingNewsPage creatingNewsPage = new CreatingNewsPage();
-
     private View decorView;
 
     @Before
     public void setUp() {
         mActivityScenarioRule.getScenario().onActivity(activity -> decorView = activity.getWindow().getDecorView());
         try {
+            mainPage.checkMainPage();
+            mainPage.goToTabAllNews();
+            return;
+        } catch (Exception ignored) {}
+        try {
             authorizationPage.checkIsDisplayed();
-        } catch (Exception e) {
-            navigationPage.openMenu();
-            navigationPage.logOut();
-        }
+            authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
+            mainPage.goToTabAllNews();
+        } catch (Exception ignored) {}
     }
+    AuthorizationPage authorizationPage = new AuthorizationPage();
+    NewsPage newsPage = new NewsPage();
+    MainPage mainPage = new MainPage();
+    ControlPanelPage controlPanelPage = new ControlPanelPage();
+    CreatingNewsPage creatingNewsPage = new CreatingNewsPage();
 
     @Story("ТК-29 Сортировка по возврастанию и убыванию")
     @Test
@@ -55,31 +55,22 @@ public class ControlPanelTest {
         String FirstTime = Row.getFirstTime();
         String SecondTime = Row.getTime();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание первой новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(Row.getRandomCategory(), FirstTitle, today, FirstTime, "1-я новость");
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Создание второй новости");
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(Row.getRandomCategory(), SecondTitle, today, SecondTime, "2-я новость");
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Проверка порядка новостей: по возрастанию времени");
         controlPanelPage.checkNewsOrder(SecondTitle, FirstTitle);
 
         controlPanelPage.clickSortButton();
-        Allure.step("Проверка порядка новостей: по убыванию времени");
         controlPanelPage.checkNewsOrder(FirstTitle, SecondTitle);
 
         controlPanelPage.clickSortButton();
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(FirstTitle);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -102,22 +93,15 @@ public class ControlPanelTest {
         String publicationDate = Row.getTodayDate();
         String time = Row.getTime();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Удаление созданной новости");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
 
-        Allure.step("Проверка, что новость удалена");
         controlPanelPage.checkNewsControlPanelIsDelete(title);
 
     }
@@ -131,20 +115,13 @@ public class ControlPanelTest {
         String publicationDate = Row.getTodayDate();
         String time = Row.getTime();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("проверка свёрнутого состояния");
         controlPanelPage.checkUnfolding(description);
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -162,21 +139,14 @@ public class ControlPanelTest {
         String publicationDate = Row.getTodayDate();
         String time = Row.getTime();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("действие + проверка развёрнутого состояния");
-        controlPanelPage.expandNewsByTitleAndPublicationDate(title , publicationDate);
+        controlPanelPage.expandNewsByTitleAndPublicationDate(title, publicationDate);
         controlPanelPage.checkUnfoldingNews(title, description);
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();

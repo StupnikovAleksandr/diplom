@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.not;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class FilterControlPanelPage {
@@ -34,57 +35,82 @@ public class FilterControlPanelPage {
 
 
     public void editFilterTab(String category, String date_start, String date_end) {
-        category_text_auto_complete_text_view.perform(replaceText(category), closeSoftKeyboard());
-        date_start_text_input.perform(replaceText(date_start), closeSoftKeyboard());
-        date_end_text_input.perform(replaceText(date_end), closeSoftKeyboard());
+        Allure.step("Заполнение фильтра: категория = " + category + ", дата начала = " + date_start + ", дата окончания = " + date_end);
+
+        Allure.step("Ввод категории: " + category);
+        category_text_auto_complete_text_view
+                .perform(replaceText(category), closeSoftKeyboard());
+
+        Allure.step("Ввод даты начала публикации: " + date_start);
+        date_start_text_input
+                .perform(replaceText(date_start), closeSoftKeyboard());
+
+        Allure.step("Ввод даты окончания публикации: " + date_end);
+        date_end_text_input
+                .perform(replaceText(date_end), closeSoftKeyboard());
     }
 
     public void editFilterTab(String category) {
+        Allure.step("Фильтрация только  по категории: " + category);
         editFilterTab(category, "", "");
     }
 
     public void editFilterTab(String category, String date_start) {
+        Allure.step("Фильтрация по категории и дате начала: " + category + date_start);
         editFilterTab(category, date_start, "");
     }
 
     public void editFilterCategoryAndDateEnd(String category, String date_end) {
+        Allure.step("Фильтрация по категории и дате окончания: " + category +  date_end);
         editFilterTab(category, "", date_end);
     }
 
     public void editFilterTabRange(String date_start, String date_end) {
+        Allure.step("Фильтрация по диапазону дат: " + date_start + " - " + date_end);
         editFilterTab("", date_start, date_end);
     }
 
     public void clickFilterButton() {
-        filter_Button.check(matches(isDisplayed()))
+        Allure.step("Нажатие кнопки 'Фильтровать'");
+        filter_Button
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void clickCancelButton() {
-        cancel_Button.check(matches(isDisplayed()))
+        Allure.step("Нажатие кнопки 'Отмена'");
+        cancel_Button
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void clickAndCheckBoxActive() {
-        check_box_active.check(matches(isDisplayed())).perform(click());
+        Allure.step("Активация чек-бокса 'Active'");
+        check_box_active
+                .check(matches(isDisplayed())).perform(click());
         checkBoxActive();
     }
 
     public void checkBoxActive() {
-        check_box_active.check(matches(not(isChecked())));
+        Allure.step("Проверка, что чек-бокс 'Active' снят");
+        check_box_active
+                .check(matches(not(isChecked())));
     }
 
     public void clickAndCheckBoxInActive() {
+        Allure.step("Активация чек-бокса 'Inactive'");
         check_box_inActive.check(matches(isDisplayed())).perform(click());
         checkBoxInActive();
     }
 
     public void checkBoxInActive() {
+        Allure.step("Проверка, что чек-бокс 'Inactive' снят");
         check_box_inActive.check(matches(not(isChecked())));
     }
 
 
     public void checkErrorWrongAnClickOK() {
+        Allure.step("Проверка отображения ошибки 'Wrong period' и подтверждение нажатием OK");
         error_datePeriod.check(matches(isDisplayed()));
         window_ok_Button.check(matches(isDisplayed())).perform(click());
 

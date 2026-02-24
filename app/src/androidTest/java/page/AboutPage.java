@@ -18,6 +18,7 @@ import android.content.Intent;
 
 import androidx.test.espresso.ViewInteraction;
 
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class AboutPage {
@@ -28,22 +29,30 @@ public class AboutPage {
 
 
     public void checkOnAboutTab() {
-        urlPolicy.check(matches(isDisplayed()));
-        urlPolicy.check(matches(withText("https://vhospice.org/#/privacy-policy/")));
+        Allure.step("Проверка отображения раздела 'О приложении'");
+        urlPolicy
+                .check(matches(isDisplayed()));
+        urlPolicy
+                .check(matches(withText("https://vhospice.org/#/privacy-policy/")));
 
 
     }
 
 
     public void clickUrlPolicy() {
-        urlPolicy.perform(click());
+        Allure.step("Клик по ссылке политики конфиденциальности");
+        urlPolicy
+                .perform(click());
     }
 
     public void clickUrlTerms() {
-        urlTermsOfUse.perform(click());
+        Allure.step("Клик по ссылке условий использования");
+        urlTermsOfUse
+                .perform(click());
     }
 
     public void intentPrivacyPolicy() {
+        Allure.step("Проверка интента на открытие политики конфиденциальности");
         intended(allOf(
                 hasAction(Intent.ACTION_VIEW),
                 hasData(hasHost("vhospice.org"))
@@ -51,6 +60,7 @@ public class AboutPage {
     }
 
     public void intentTermsOfUse() {
+        Allure.step("Проверка интента на открытие условий использования");
         intended(allOf(
                 hasAction(Intent.ACTION_VIEW),
                 hasData(hasHost("vhospice.org"))

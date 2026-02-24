@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.ViewInteraction;
 
 import data.Helper;
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class NewsPage {
@@ -28,30 +29,39 @@ public class NewsPage {
     private final ViewInteraction newsListSwipeRefresh = onView(withId(R.id.news_list_swipe_refresh));
 
     public void checkNewsTab() {
+        Allure.step("Проверка отображения вкладки 'Новости'");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.sort_news_material_button, 5_000));
-        sort_news_material_button.check(matches(isDisplayed()));
+        sort_news_material_button
+                .check(matches(isDisplayed()));
     }
 
     public ControlPanelPage buttonEditNews() {
+        Allure.step("Переход в раздел 'Панель управления'");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.edit_news_material_button, 5_000));
-        edit_news_material_button.perform(click());
+        edit_news_material_button
+                .perform(click());
         return new ControlPanelPage();
 
     }
 
     public void clickSortButtonNewsTab() {
-        sort_news_material_button.check(matches(isDisplayed()))
+        Allure.step("Нажатие кнопки сортировки новостей");
+        sort_news_material_button
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public FilterNewsPage clickFilterButtonNewsTab() {
-        filter_news_material_button.check(matches(isDisplayed()))
+        Allure.step("Открытие фильтра новостей");
+        filter_news_material_button
+                .check(matches(isDisplayed()))
                 .perform(click());
         return new FilterNewsPage();
     }
 
 
     public void checkNewsOrderNewsTab(String firstTitle, String secondTitle) {
+        Allure.step("Проверка порядка новостей: '" + firstTitle + "' должна быть перед '" + secondTitle + "'");
 
         onView(withText(firstTitle)).check(matches(isDisplayed()));
         onView(withText(secondTitle)).check(matches(isDisplayed()));
@@ -85,6 +95,7 @@ public class NewsPage {
     }
 
     public void newsListSwipeRefresh() {
+        Allure.step("Обновление списка новостей свайпом вниз");
         newsListSwipeRefresh.perform(swipeDown());
     }
 

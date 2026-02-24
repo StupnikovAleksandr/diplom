@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 
 import data.Row;
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
-import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Story;
 import page.AuthorizationPage;
@@ -50,8 +49,6 @@ public class AuthorizationTest {
     @Test
     public void happyAuthorizationTest() {
         authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-
-        Allure.step("Проверка на главную страницу");
         mainPage.checkMainPage();
     }
 
@@ -59,8 +56,6 @@ public class AuthorizationTest {
     @Test
     public void unhappyInValidLoginAuthorizationTest() {
         authorizationPage.authorizationError(Row.InValidLogin, Row.ValidPassword);
-
-        Allure.step("Проверка на ошибку");
         authorizationPage.messageAuthorizationError();
     }
 
@@ -68,8 +63,6 @@ public class AuthorizationTest {
     @Test
     public void unhappyInValidPasswordAuthorizationTest() {
         authorizationPage.authorizationError(Row.ValidLogin, Row.InValidPassword);
-
-        Allure.step("Проверка на ошибку");
         authorizationPage.messageAuthorizationError();
     }
 
@@ -77,8 +70,6 @@ public class AuthorizationTest {
     @Test
     public void unhappyEmptyLoginAuthorizationTest() {
         authorizationPage.authorizationError(Row.EmptyLogin, Row.ValidPassword);
-
-        Allure.step("Проверка на ошибку");
         authorizationPage.messageEmptyFieldError();
     }
 
@@ -86,8 +77,6 @@ public class AuthorizationTest {
     @Test
     public void unhappyEmptyPasswordAuthorizationTest() {
         authorizationPage.authorizationError(Row.ValidLogin, Row.EmptyPassword);
-
-        Allure.step("Проверка на ошибку");
         authorizationPage.messageEmptyFieldError();
     }
 
@@ -95,8 +84,6 @@ public class AuthorizationTest {
     @Test
     public void unhappyUpperCaseAuthorizationTest() {
         authorizationPage.authorizationError(Row.UpperCaseLogin, Row.UpperCasePassword);
-
-        Allure.step("Проверка на ошибку");
         authorizationPage.messageAuthorizationError();
     }
 
@@ -104,22 +91,19 @@ public class AuthorizationTest {
     @Test
     public void sqlInjectionLoginTest() {
         authorizationPage.authorization(Row.SqlInjectionLogin, Row.ValidPassword);
-
-        Allure.step("Проверка на ошибку");
         authorizationPage.messageAuthorizationError();
-        //чек на ошибку
+
     }
 
     @Story("ТК-9 SQL- инъекция  по паролю")
     @Test
     public void sqlInjectionPasswordTest() {
         authorizationPage.authorization(Row.ValidLogin, Row.SqlInjectionPassword);
-
-        Allure.step("Проверка на ошибку");
         authorizationPage.messageAuthorizationError();
     }
 
 
 }
+
 
 

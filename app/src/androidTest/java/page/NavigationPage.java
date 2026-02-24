@@ -11,6 +11,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import androidx.test.espresso.ViewInteraction;
 
 import data.Helper;
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class NavigationPage {
@@ -25,40 +26,53 @@ public class NavigationPage {
 
 
     public void openMenu() {
-        menuButton.check(matches(isDisplayed()))
+        Allure.step("Открытие бокового меню");
+        menuButton
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void logOut() {
-        logOutButton.check(matches(isDisplayed()))
+        Allure.step("Выход из аккаунта");
+        logOutButton
+                .check(matches(isDisplayed()))
                 .perform(click());
 
     }
 
     public NewsPage goOverTabNews() {
+        Allure.step("Переход в раздел 'News'");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.main_menu_image_button, 5_000));
-        main_menu_button.perform(click());
-        newsButton.check(matches(isDisplayed()))
+        main_menu_button
+                .perform(click());
+        newsButton
+                .check(matches(isDisplayed()))
                 .perform(click());
         return new NewsPage();
     }
 
     public AboutPage goOverTabAbout() {
+        Allure.step("Переход в раздел 'About'");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.main_menu_image_button, 5_000));
-        main_menu_button.perform(click());
-        aboutButton.check(matches(isDisplayed()))
+        main_menu_button
+                .perform(click());
+        aboutButton
+                .check(matches(isDisplayed()))
                 .perform(click());
         return new AboutPage();
     }
 
     public LoveIsAllPage goOverTabLoveIsAll() {
+        Allure.step("Переход в раздел 'Love is All'");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.main_menu_image_button, 5_000));
-        our_mission_button.perform(click());
+        our_mission_button
+                .perform(click());
         return new LoveIsAllPage();
 
     }
 
     public MainPage goOverTabMain() {
+        Allure.step("Переход в раздел 'Main'");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.main_menu_image_button, 5_000));
         main_menu_button.perform(click());
         mainButton.check(matches(isDisplayed()))

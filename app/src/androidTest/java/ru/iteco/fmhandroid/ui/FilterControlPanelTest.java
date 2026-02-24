@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 
 import data.Row;
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
-import io.qameta.allure.kotlin.Allure;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Story;
 import page.AuthorizationPage;
@@ -36,13 +35,26 @@ public class FilterControlPanelTest {
     @Before
     public void setUp() {
         mActivityScenarioRule.getScenario().onActivity(activity -> decorView = activity.getWindow().getDecorView());
+
+        try {
+            mainPage.checkMainPage();
+            return;
+        } catch (Exception ignored) {}
+
         try {
             authorizationPage.checkIsDisplayed();
-        } catch (Exception e) {
-            navigationPage.openMenu();
-            navigationPage.logOut();
-        }
+            authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
+        } catch (Exception ignored) {}
     }
+
+
+
+
+
+
+
+
+
 
     AuthorizationPage authorizationPage = new AuthorizationPage();
     NewsPage newsPage = new NewsPage();
@@ -69,38 +81,29 @@ public class FilterControlPanelTest {
         String secondPublicationDate = Row.getPlus2DayDate();
         String secondTime = Row.getTime();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
-
-        Allure.step("Создание первой новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
 
         creatingNewsPage.createNews(category, firstTitle, firstPublicationDate, firstTime, firstDescription);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Создание второй новости");
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, secondTitle, secondPublicationDate, secondTime, secondDescription);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Изменение активности 2й вести на NOT ACTIVE");
         controlPanelPage.editNewsByTitle(secondTitle);
         editingNewsPage.clickAndCheckUncheckedCheckBox();
         editingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category, firstPublicationDate, secondPublicationDate);
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         controlPanelPage.checkEditAndCreateNewsByTitle(firstTitle, firstDescription, firstPublicationDate, "ACTIVE");
         controlPanelPage.checkEditAndCreateNewsByTitle(secondTitle, secondDescription, secondPublicationDate, "NOT ACTIVE");
 
 
-        Allure.step("Удаление созданых новостей для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(firstTitle);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -124,32 +127,25 @@ public class FilterControlPanelTest {
 
         String secondPublicationDate = Row.getPlus2DayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
-
-        Allure.step("Создание  новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
+
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Изменение активности  вести на NOT ACTIVE");
         controlPanelPage.editNewsByTitle(title);
         editingNewsPage.clickAndCheckUncheckedCheckBox();
         editingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category, publicationDate, secondPublicationDate);
         filterControlPanelPage.clickAndCheckBoxActive();
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         controlPanelPage.checkEditAndCreateNewsByTitle(title, description, publicationDate, "NOT ACTIVE");
 
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -168,26 +164,20 @@ public class FilterControlPanelTest {
         String time = Row.getTime();
         String secondPublicationDate = Row.getPlus2DayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
-
-        Allure.step("Создание  новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
+
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category, publicationDate, secondPublicationDate);
         filterControlPanelPage.clickAndCheckBoxInActive();
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         controlPanelPage.checkEditAndCreateNewsByTitle(title, description, publicationDate, "ACTIVE");
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -205,26 +195,19 @@ public class FilterControlPanelTest {
         String time = Row.getTime();
         String secondPublicationDate = Row.getPlus2DayDate();
 
-
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
-
-        Allure.step("Создание  новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
+
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTabRange(publicationDate, secondPublicationDate);
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         controlPanelPage.checkEditAndCreateNewsByTitle(title, description, publicationDate, "ACTIVE");
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -232,6 +215,7 @@ public class FilterControlPanelTest {
 
     }
 
+    //упадёт
     @Story("ТК-51 Фильтрация с пустой датой начала")
     @Test
     public void InvalidDateStartPeriodTest() {
@@ -239,17 +223,13 @@ public class FilterControlPanelTest {
         String category = Row.getRandomCategory();
         String publicationDate = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("переход в редактирование новостей");
         newsPage.buttonEditNews();
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category, publicationDate);
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения ошибки Error wrong");
         filterControlPanelPage.checkErrorWrongAnClickOK();
 
     }
@@ -265,29 +245,22 @@ public class FilterControlPanelTest {
         String time = Row.getTime();
         String secondPublicationDate = Row.getPlus2DayDate();
 
-
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category, publicationDate, secondPublicationDate);
         filterControlPanelPage.clickAndCheckBoxInActive();
         filterControlPanelPage.clickAndCheckBoxActive();
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         controlPanelPage.checkEditAndCreateNewsByTitle(title, description, publicationDate, "ACTIVE");
 
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -301,17 +274,13 @@ public class FilterControlPanelTest {
         String category = Row.getRandomCategory();
         String secondPublicationDate = Row.getPlus2DayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("переход в фильтр новостей");
         newsPage.buttonEditNews();
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterCategoryAndDateEnd(category, secondPublicationDate);
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения ошибки Error wrong");
         filterControlPanelPage.checkErrorWrongAnClickOK();
 
     }
@@ -326,26 +295,19 @@ public class FilterControlPanelTest {
         String publicationDate = Row.getTodayDate();
         String time = Row.getTime();
 
-
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category);
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         controlPanelPage.checkEditAndCreateNewsByTitle(title, description, publicationDate, "ACTIVE");
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -364,27 +326,21 @@ public class FilterControlPanelTest {
         String time = Row.getTime();
         String secondPublicationDate = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category, secondPublicationDate, publicationDate); // сначала сегодня потом +30
         filterControlPanelPage.clickAndCheckBoxInActive();
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         controlPanelPage.checkEditAndCreateNewsByTitle(title, description, publicationDate, "ACTIVE");
 
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -403,26 +359,20 @@ public class FilterControlPanelTest {
         String time = Row.getTime();
         String secondPublicationDate = Row.getMinus30DayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("Создание новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(category, title, publicationDate, time, description);
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Фильтрация");
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category, secondPublicationDate, publicationDate); // сначала 30 дней назад потом сегодня
         filterControlPanelPage.clickAndCheckBoxInActive();
         filterControlPanelPage.clickFilterButton();
 
-        Allure.step("Проверка отображения");
         controlPanelPage.checkEditAndCreateNewsByTitle(title, description, publicationDate, "ACTIVE");
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         controlPanelPage.deleteNewsByTitle(title);
         controlPanelPage.windowModalOKDelete();
         controlPanelPage.refreshControlPanelList();
@@ -437,16 +387,12 @@ public class FilterControlPanelTest {
         String category = Row.getRandomCategory();
         String publicationDate = Row.getTodayDate();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
         mainPage.goToTabAllNews();
 
-        Allure.step("переход в фильтр новостей");
         newsPage.buttonEditNews();
         controlPanelPage.goOverFilter();
         filterControlPanelPage.editFilterTab(category, publicationDate);
 
-        Allure.step("Выход из фильтра");
         filterControlPanelPage.clickCancelButton();
         controlPanelPage.checkControlTab();
 

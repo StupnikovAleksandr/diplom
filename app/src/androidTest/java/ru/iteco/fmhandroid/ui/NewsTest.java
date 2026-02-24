@@ -35,12 +35,19 @@ public class NewsTest {
     @Before
     public void setUp() {
         mActivityScenarioRule.getScenario().onActivity(activity -> decorView = activity.getWindow().getDecorView());
+
+        try {
+            mainPage.checkMainPage();
+            mainPage.goToTabAllNews();
+
+            return;
+        } catch (Exception ignored) {}
+
         try {
             authorizationPage.checkIsDisplayed();
-        } catch (Exception e) {
-            navigationPage.openMenu();
-            navigationPage.logOut();
-        }
+            authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
+            mainPage.goToTabAllNews();
+        } catch (Exception ignored) {}
     }
     AuthorizationPage authorizationPage = new AuthorizationPage();
     NewsPage newsPage = new NewsPage();
@@ -62,29 +69,20 @@ public class NewsTest {
         String FirstTime = Row.getFirstTime();
         String SecondTime = Row.getTime();
 
-        Allure.step("Авторизация и переход в раздел новостей");
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
-
-        Allure.step("Создание первой новости");
         newsPage.buttonEditNews();
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(Row.getRandomCategory(), FirstTitle, today, FirstTime, "1-я новость");
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Создание второй новости");
         controlPanelPage.goOverCreatingNews();
         creatingNewsPage.createNews(Row.getRandomCategory(), SecondTitle, today, SecondTime, "2-я новость");
         creatingNewsPage.clickSaveButton();
 
-        Allure.step("Сортировка новостей по возрастанию");
         navigationPage.goOverTabNews();
         newsPage.checkNewsOrderNewsTab(SecondTitle, FirstTitle);
         newsPage.clickSortButtonNewsTab();
-        Allure.step("Проверка сортировки по убыванию");
         newsPage.checkNewsOrderNewsTab(FirstTitle, SecondTitle);
 
-        Allure.step("Удаление созданной новости для чистоты тестового окружения");
         newsPage.buttonEditNews();
         controlPanelPage.deleteNewsByTitle(FirstTitle);
         controlPanelPage.windowModalOKDelete();
@@ -101,24 +99,14 @@ public class NewsTest {
     @Story("ТК-17 Переход в фильтр новостей")
     @Test
     public void goToFilterNewsTest() {
-
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
         newsPage.clickFilterButtonNewsTab();
-
-        Allure.step("Проверка перехода в фильтр новостей");
         filterNewsPage.checkNewsTab();
     }
 
     @Story("ТК-18 Переход редактирование новостей")
     @Test
     public void goToControlPanelTest() {
-
-        authorizationPage.authorization(Row.ValidLogin, Row.ValidPassword);
-        mainPage.goToTabAllNews();
         newsPage.buttonEditNews();
-
-        Allure.step("Проверка перехода в панель управления");
         controlPanelPage.checkControlTab();
     }
 }

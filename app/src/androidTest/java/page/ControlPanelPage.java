@@ -48,6 +48,7 @@ import org.hamcrest.Matcher;
 import java.util.EnumSet;
 
 import data.Helper;
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class ControlPanelPage {
@@ -59,6 +60,7 @@ public class ControlPanelPage {
 
 
     public CreatingNewsPage goOverCreatingNews() {
+        Allure.step("Переход к созданию новости");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.add_news_image_view, 5_000));
         add_news_image_view
                 .perform(click());
@@ -66,6 +68,7 @@ public class ControlPanelPage {
     }
 
     public FilterControlPanelPage goOverFilter() {
+        Allure.step("Переход к фильтрации новостей");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.filter_news_material_button, 5_000));
         filter_news_material_button
                 .perform(click());
@@ -73,34 +76,39 @@ public class ControlPanelPage {
     }
 
     public void checkControlTab() {
+        Allure.step("Проверка отображения раздела ControlTab");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.add_news_image_view, 5_000));
-        add_news_image_view.check(matches(isDisplayed()));
+        add_news_image_view
+                .check(matches(isDisplayed()));
     }
 
 
     public void clickSortButton() {
-        sort_news_material_button.check(matches(isDisplayed()))
+        Allure.step("Нажатие на кнопку сортировки");
+        sort_news_material_button
+                .check(matches(isDisplayed()))
                 .perform(click());
     }
 
     public void windowModalCancelDelete() {
-        windowModalCancelDelete.check(matches(isDisplayed()))
+        Allure.step("Нажатие кнопки 'Отмена' в модальном окне удаления");
+        windowModalCancelDelete
+                .check(matches(isDisplayed()))
                 .perform(click());
 
     }
 
     public void windowModalOKDelete() {
+        Allure.step("Нажатие кнопки 'OK' в модальном окне подтверждения удаления");
         try {
             onView(isRoot()).perform(waitFor(1500));
             onView(withText("OK")).check(matches(isDisplayed())).perform(click());
         } catch (NoMatchingViewException ignored) {
-            // Кнопки нет — ок
         }
     }
 
     public void deleteNewsByTitle(String title) {
-
-
+        Allure.step("Удаление новости с заголовком: " + title);
         onView(withId(R.id.news_list_recycler_view))
                 .perform(
                         actionOnItem(
@@ -112,8 +120,7 @@ public class ControlPanelPage {
     }
 
     public EditingNewsPage editNewsByTitle(String title) {
-
-
+        Allure.step("Редактирование новости с заголовком: " + title);
         onView(withId(R.id.news_list_recycler_view))
                 .perform(
                         actionOnItem(
@@ -127,6 +134,7 @@ public class ControlPanelPage {
 
 
     public void refreshControlPanelList() {
+        Allure.step("Обновление списка новостей свайпом вниз");
         try {
             onView(isRoot()).perform(Helper.waitDisplayed(R.id.news_control_panel_swipe_to_refresh, 5_000));
             onView(withId(R.id.news_control_panel_swipe_to_refresh))
@@ -136,6 +144,7 @@ public class ControlPanelPage {
     }
 
     public void checkNewsControlPanelIsDelete(String title) {
+        Allure.step("Проверка, что новость с заголовком '" + title + "' удалена из списка");
         try {
             onView(withText(title)).check(doesNotExist());
         } catch (NoMatchingViewException e) {
@@ -144,6 +153,7 @@ public class ControlPanelPage {
 
 
     public void checkNewsDoesNotExist(String title, String description) {
+        Allure.step("Проверка отсутствия новости с заголовком: " + title + " и описанием: " + description);
         onView(allOf(
                 withText(title),
                 isDescendantOfA(hasDescendant(withText(description)))
@@ -152,8 +162,9 @@ public class ControlPanelPage {
 
 
     public void checkEditAndCreateNewsByTitle(String updateTitle, String updateDescription, String publicationDate, String actualStatus) {
-
+        Allure.step("Проверка отображения новости с заголовком: " + updateTitle);
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.news_item_material_card_view, 10_000));
+        Allure.step("Проверка наличия всех элементов в карточке новости");
         onView(allOf(
                 withId(R.id.news_item_material_card_view),
                 hasDescendant(allOf(
@@ -173,6 +184,7 @@ public class ControlPanelPage {
                 )),
                 isDisplayed()
         )).check(matches(isDisplayed()));
+        Allure.step("Клик по карточке новости для просмотра деталей");
 
         onView(allOf(
                 withId(R.id.news_item_material_card_view),
@@ -182,6 +194,7 @@ public class ControlPanelPage {
                 )),
                 isDisplayed()
         )).perform(click());
+        Allure.step("Проверка отображения описания новости");
 
         onView(allOf(
                 withId(R.id.news_item_description_text_view),
@@ -191,6 +204,7 @@ public class ControlPanelPage {
     }
 
     public void expandNewsByTitleAndPublicationDate(String title, String publicationDate) {
+        Allure.step("Развертывание новости с заголовком: " + title + " и датой публикации: " + publicationDate);
         onView(
                 allOf(
                         withId(R.id.news_item_material_card_view),
@@ -207,6 +221,7 @@ public class ControlPanelPage {
     }
 
     public void checkUnfoldingNews(String title, String description) {
+        Allure.step("Проверка развернутой новости с заголовком: " + title);
         onView(allOf(
                 withId(R.id.news_item_material_card_view),
                 hasDescendant(allOf(
@@ -223,16 +238,20 @@ public class ControlPanelPage {
 
 
     public void checkUnfolding(String description) {
+        Allure.step("Проверка, что описание новости скрыто");
         onView(withText(description)).check(matches(not(isDisplayed())));
     }
 
     private final ViewInteraction recyclerView = onView(withId(R.id.news_list_recycler_view));
 
     public void scrollNews(String title) {
-        recyclerView.perform(scrollTo(hasDescendant(withText(title))));
+        Allure.step("Прокрутка к новости с заголовком: " + title);
+        recyclerView
+                .perform(scrollTo(hasDescendant(withText(title))));
     }
 
     public void checkNewsOrder(String firstTitle, String secondTitle) {
+        Allure.step("Проверка порядка новостей: " + firstTitle + " должна быть перед " + secondTitle);
         scrollNews(secondTitle);
 
         onView(withText(firstTitle)).check(matches(isDisplayed()));

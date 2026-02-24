@@ -14,6 +14,7 @@ import static org.hamcrest.Matchers.not;
 import androidx.test.espresso.ViewInteraction;
 
 import data.Helper;
+import io.qameta.allure.kotlin.Allure;
 import ru.iteco.fmhandroid.R;
 
 public class MainPage {
@@ -23,17 +24,22 @@ public class MainPage {
 
 
     public void checkMainPage() {
+        Allure.step("Проверка отображения главной страницы");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.all_news_text_view, 5_000));
-        all_news_text_view.check(matches(isDisplayed()));
+        all_news_text_view
+                .check(matches(isDisplayed()));
     }
 
     public NewsPage goToTabAllNews() {
+        Allure.step("Переход к разделу 'Все новости'");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.all_news_text_view, 5_000));
-        all_news_text_view.perform(click());
+        all_news_text_view
+                .perform(click());
         return new NewsPage();
     }
 
     public void intentUnfolding() {
+        Allure.step("Развертывание блока новостей");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.expand_material_button, 5_000));
 
         expand_material_button
@@ -42,6 +48,7 @@ public class MainPage {
     }
 
     public void checkFolding() {
+        Allure.step("Проверка, что блок новостей свёрнут");
         onView(isRoot()).perform(Helper.waitDisplayed(R.id.news_list_recycler_view, 5_000));
         news_list_recycler_view
                 .check(matches(isDisplayed()));
@@ -49,12 +56,18 @@ public class MainPage {
     }
 
     public void checkUnfolding() {
-        news_list_recycler_view.check(matches(not(isDisplayed())));
+        Allure.step("Проверка, что блок новостей развёрнут");
+        news_list_recycler_view
+                .check(matches(not(isDisplayed())));
     }
 
     public void checkNewsMainPage(String title, String description) {
+        Allure.step("Проверка отображения новости: заголовок = " + title);
+
+        Allure.step("Клик по заголовку новости");
         onView(withText(title)).perform(click());
 
+        Allure.step("Проверка отображения описания новости");
         onView(withText(description)).check(matches(isDisplayed()));
     }
 
