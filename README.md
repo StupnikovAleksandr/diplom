@@ -11,7 +11,7 @@
 | [Documentation/Plan.md](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/Plan.md) | План тестирования |
 | [Documentation/Check.xlsx](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/Сhecklist.xlsx) | Чек-лист с результатами ручных тестов |
 | [Documentation/Cases.xlsx](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/Case%20.xlsx) | Тест-кейсы |
-| [Documentation/allure-results.zip](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/allure-results.rar) | Готовый Allure-отчёт |
+| [Documentation/allure-results.zip](https://github.com/StupnikovAleksandr/diplom/blob/main/Documentation/allure-results.zip) | Готовый Allure-отчёт |
  
 ---
 
